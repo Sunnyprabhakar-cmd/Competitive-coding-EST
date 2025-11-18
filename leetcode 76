@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if (t.size()>s.size()){ 
+            return "";}
+        vector<int>need(128,0);
+        for(char c:t){
+            need[c]++;}
+        int required=t.size();
+        int l=0,r=0;
+        int minLen=INT_MAX;
+        int start=0;
+        while(r<s.size()) {
+            if(need[s[r]]>0){
+                required--;}
+            need[s[r]]--;
+            r++;
+             while(required==0){
+                if(r-l<minLen){
+                    minLen=r-l;
+                    start=l;
+                }
+                need[s[l]]++;
+                if(need[s[l]]>0){
+                    required++;}
+                l++;
+            }
+        }
+        return minLen==INT_MAX ?"":s.substr(start,minLen);
+    }
+};
